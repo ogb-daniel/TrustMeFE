@@ -1,15 +1,38 @@
 import { Tier } from "@/lib/types/api";
 
-export const TIER_CONFIG: Record<
-  Tier,
-  {
-    label: string;
-    color: string;
-    bgColor: string;
-    textColor: string;
-    borderColor: string;
-  }
-> = {
+type TierConfig = {
+  label: string;
+  color: string;
+  bgColor: string;
+  textColor: string;
+  borderColor: string;
+};
+
+// Support both new tier names (MONITOR, ALERT, ACTION) and legacy names (INFORM, WATCH, CRISIS)
+export const TIER_CONFIG: Record<string, TierConfig> = {
+  // New tier naming (primary)
+  ACTION: {
+    label: "Action",
+    color: "destructive",
+    bgColor: "bg-destructive/10",
+    textColor: "text-destructive",
+    borderColor: "border-destructive",
+  },
+  ALERT: {
+    label: "Alert",
+    color: "orange",
+    bgColor: "bg-orange-500/10",
+    textColor: "text-orange-600",
+    borderColor: "border-orange-500",
+  },
+  MONITOR: {
+    label: "Monitor",
+    color: "blue",
+    bgColor: "bg-blue-500/10",
+    textColor: "text-blue-600",
+    borderColor: "border-blue-500",
+  },
+  // Legacy tier naming (for backward compatibility)
   CRISIS: {
     label: "Crisis",
     color: "destructive",
@@ -17,22 +40,15 @@ export const TIER_CONFIG: Record<
     textColor: "text-destructive",
     borderColor: "border-destructive",
   },
-  ACTION: {
-    label: "Action",
+  WATCH: {
+    label: "Watch",
     color: "orange",
     bgColor: "bg-orange-500/10",
     textColor: "text-orange-600",
     borderColor: "border-orange-500",
   },
-  WATCH: {
-    label: "Watch",
-    color: "yellow",
-    bgColor: "bg-yellow-500/10",
-    textColor: "text-yellow-600",
-    borderColor: "border-yellow-500",
-  },
   INFORM: {
-    label: "Info",
+    label: "Inform",
     color: "blue",
     bgColor: "bg-blue-500/10",
     textColor: "text-blue-600",
@@ -41,8 +57,7 @@ export const TIER_CONFIG: Record<
 };
 
 export const TIER_THRESHOLDS = {
-  CRISIS: 80,
   ACTION: 60,
-  WATCH: 40,
-  INFORM: 0,
+  ALERT: 40,
+  MONITOR: 0,
 };

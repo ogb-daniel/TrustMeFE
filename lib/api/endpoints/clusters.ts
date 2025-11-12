@@ -10,12 +10,8 @@ export const clustersApi = {
   list: async (filters?: ClusterFilters): Promise<ClustersResponse> => {
     const searchParams = new URLSearchParams();
 
-    if (filters?.limit) searchParams.set("limit", String(filters.limit));
-    if (filters?.offset) searchParams.set("offset", String(filters.offset));
-    if (filters?.sort) searchParams.set("sort", filters.sort);
-    if (filters?.tier) searchParams.set("tier", filters.tier);
-    if (filters?.min_risk)
-      searchParams.set("min_risk", String(filters.min_risk));
+    if (filters?.page) searchParams.set("page", String(filters.page));
+    if (filters?.page_size) searchParams.set("page_size", String(filters.page_size));
 
     return apiClient
       .get("api/v1/clusters", { searchParams })

@@ -22,20 +22,36 @@ export const apiClient = ky.create({
   hooks: {
     beforeRequest: [
       (request) => {
-        // Future: Add authentication
-        // const token = getAuthToken();
-        // if (token) {
-        //   request.headers.set('Authorization', `Bearer ${token}`);
-        // }
+        // Add ngrok-skip-browser-warning header to bypass ngrok warning page
+        request.headers.set('ngrok-skip-browser-warning', 'true');
 
         console.log(`[API] ${request.method} ${request.url}`);
       },
     ],
     afterResponse: [
-      async (_request, _options, response) => {
+      async (request, _options, response) => {
         if (!response.ok) {
-          const error = await response.json() as { detail?: string };
-          const errorMessage = error?.detail || "API request failed";
+          let errorMessage = `API request failed: ${response.status} ${response.statusText}`;
+
+          try {
+            const contentType = response.headers.get('content-type');
+            if (contentType?.includes('application/json')) {
+              const error = await response.json() as { detail?: string };
+              errorMessage = error?.detail || errorMessage;
+            } else {
+              // If response is not JSON, log the content type
+              const text = await response.text();
+              console.error(`[API Error] Non-JSON response from ${request.url}:`, {
+                status: response.status,
+                contentType,
+                bodyPreview: text.substring(0, 200)
+              });
+              errorMessage = `API returned ${contentType || 'unknown content type'} instead of JSON. Check if the API is running correctly.`;
+            }
+          } catch (parseError) {
+            console.error(`[API Error] Failed to parse error response:`, parseError);
+          }
+
           console.error(`[API Error] ${response.status}: ${errorMessage}`);
           throw new Error(errorMessage);
         }
