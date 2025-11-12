@@ -13,9 +13,9 @@ interface SentimentAnalysisProps {
 
 export function SentimentAnalysis({ cluster }: SentimentAnalysisProps) {
   const sentiments: SentimentData[] = [
-    { label: "Negative", value: cluster.sentiment.negative, color: "bg-red-500" },
-    { label: "Positive", value: cluster.sentiment.positive, color: "bg-emerald-500" },
-    { label: "Neutral", value: cluster.sentiment.neutral, color: "bg-blue-400" },
+    { label: "Negative", value: cluster.sentiment_breakdown.negative, color: "bg-red-500" },
+    { label: "Positive", value: cluster.sentiment_breakdown.positive, color: "bg-emerald-500" },
+    { label: "Neutral", value: cluster.sentiment_breakdown.neutral, color: "bg-blue-400" },
   ]
 
   return (

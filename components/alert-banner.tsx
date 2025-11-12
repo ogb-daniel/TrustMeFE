@@ -20,17 +20,17 @@ interface AlertBannerProps {
 }
 
 export function AlertBanner({ cluster }: AlertBannerProps) {
-  const tierConfig = TIER_CONFIG[cluster.tier];
-  const isHighRisk = cluster.risk_score >= 70;
+  const tierConfig = TIER_CONFIG[cluster.risk_analysis.risk_tier] || TIER_CONFIG["ACTION"];
+  const isHighRisk = cluster.risk_analysis.risk_score >= 70;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [responsePreview, setResponsePreview] = useState<string>("");
 
   const generateMutation = useGenerateResponse();
 
   useEffect(() => {
-    if (cluster.id) {
+    if (cluster.cluster_id) {
       generateMutation.mutate(
-        { cluster_id: cluster.id },
+        { cluster_id: cluster.cluster_id },
         {
           onSuccess: (data) => {
             const fullResponse = data.response_text || "";
@@ -44,7 +44,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
         }
       );
     }
-  }, [cluster.id]);
+  }, [cluster.cluster_id]);
 
   return (
     <>
@@ -67,7 +67,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
                   <p
                     className={`text-2xl font-bold mt-1 ${isHighRisk ? "text-destructive" : "text-yellow-500"}`}
                   >
-                    {cluster.risk_score}%
+                    {cluster.risk_analysis.risk_score.toFixed(1)}%
                   </p>
                 </div>
                 <div className="mt-4">
@@ -119,7 +119,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
             <DialogTitle>Suggested Response</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <ResponseSuggestion clusterId={cluster.id} />
+            <ResponseSuggestion clusterId={cluster.cluster_id} />
           </DialogBody>
         </DialogContent>
       </Dialog>

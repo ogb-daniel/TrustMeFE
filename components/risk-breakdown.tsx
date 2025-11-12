@@ -9,10 +9,11 @@ interface RiskBreakdownProps {
 
 export function RiskBreakdown({ riskAnalysis }: RiskBreakdownProps) {
   const metrics = [
-    { label: "Source Credibility", value: riskAnalysis.components.source_credibility },
-    { label: "Factuality", value: riskAnalysis.components.factuality_score },
-    { label: "Virality", value: riskAnalysis.components.virality },
-    { label: "Coordination", value: riskAnalysis.components.coordination_score },
+    { label: "Sentiment", value: riskAnalysis.risk_components.sentiment },
+    { label: "Velocity", value: riskAnalysis.risk_components.velocity },
+    { label: "Coordination", value: riskAnalysis.risk_components.coordination },
+    { label: "Credibility", value: riskAnalysis.risk_components.credibility },
+    { label: "Divergence", value: riskAnalysis.risk_components.divergence },
   ]
 
   return (
@@ -24,7 +25,7 @@ export function RiskBreakdown({ riskAnalysis }: RiskBreakdownProps) {
           <div key={metric.label} className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-foreground">{metric.label}</span>
-              <span className="text-sm font-semibold text-muted-foreground">{metric.value}%</span>
+              <span className="text-sm font-semibold text-muted-foreground">{metric.value.toFixed(1)}%</span>
             </div>
             <div className="h-2 rounded-full bg-muted overflow-hidden">
               <div
