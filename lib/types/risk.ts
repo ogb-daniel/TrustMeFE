@@ -12,6 +12,7 @@ export interface RiskAnalysis {
   rag_mode: "full" | "telemetry_only" | "insufficient_data";
   rag_available: boolean;
   explanation: string[];
+  recommendations: string[];
 }
 
 export interface RiskComponents {

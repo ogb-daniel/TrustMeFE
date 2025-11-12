@@ -48,4 +48,10 @@ export const mockRiskAnalysis: RiskAnalysis = {
     "High bot coordination score (87%) suggests amplification",
     "Source credibility low (34%) - unverified accounts",
   ],
+  recommendations: [
+    "⚠️ Prepare authoritative response within 2 hours",
+    "📊 Cite verified data and contradictions",
+    "🔍 Monitor for escalation",
+    "🔴 High divergence: claim directly contradicts evidence",
+  ],
 };

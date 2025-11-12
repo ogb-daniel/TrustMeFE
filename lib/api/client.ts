@@ -2,6 +2,13 @@ import ky from "ky";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+
+// Granular mock flags for different data types
+export const USE_MOCK_CLUSTERS = process.env.NEXT_PUBLIC_MOCK_CLUSTERS === "true";
+export const USE_MOCK_RISK = process.env.NEXT_PUBLIC_MOCK_RISK_ANALYSIS === "true";
+export const USE_MOCK_STATISTICS = process.env.NEXT_PUBLIC_MOCK_STATISTICS === "true";
+
+// Legacy flag for backward compatibility
 export const USE_MOCK = process.env.NEXT_PUBLIC_ENABLE_MOCK_DATA === "true";
 
 export const apiClient = ky.create({
