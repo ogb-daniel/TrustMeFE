@@ -12,10 +12,20 @@ interface SentimentAnalysisProps {
 }
 
 export function SentimentAnalysis({ cluster }: SentimentAnalysisProps) {
+  // Safety check for sentiment_breakdown
+  if (!cluster?.sentiment_breakdown) {
+    return (
+      <Card className="p-6 bg-card border border-border/50">
+        <h2 className="text-lg font-semibold text-foreground mb-6">Sentiment Analysis</h2>
+        <p className="text-sm text-muted-foreground">Sentiment data not available</p>
+      </Card>
+    )
+  }
+
   const sentiments: SentimentData[] = [
-    { label: "Negative", value: cluster.sentiment_breakdown.negative, color: "bg-red-500" },
-    { label: "Positive", value: cluster.sentiment_breakdown.positive, color: "bg-emerald-500" },
-    { label: "Neutral", value: cluster.sentiment_breakdown.neutral, color: "bg-blue-400" },
+    { label: "Negative", value: cluster.sentiment_breakdown.negative ?? 0, color: "bg-red-500" },
+    { label: "Positive", value: cluster.sentiment_breakdown.positive ?? 0, color: "bg-emerald-500" },
+    { label: "Neutral", value: cluster.sentiment_breakdown.neutral ?? 0, color: "bg-blue-400" },
   ]
 
   return (

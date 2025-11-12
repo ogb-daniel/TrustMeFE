@@ -8,12 +8,22 @@ interface RiskBreakdownProps {
 }
 
 export function RiskBreakdown({ riskAnalysis }: RiskBreakdownProps) {
+  // Safety check for risk_components
+  if (!riskAnalysis?.risk_components) {
+    return (
+      <Card className="p-6 bg-card border border-border/50">
+        <h2 className="text-lg font-semibold text-foreground mb-6">Risk Breakdown</h2>
+        <p className="text-sm text-muted-foreground">Risk component data not available</p>
+      </Card>
+    )
+  }
+
   const metrics = [
-    { label: "Sentiment", value: riskAnalysis.risk_components.sentiment },
-    { label: "Velocity", value: riskAnalysis.risk_components.velocity },
-    { label: "Coordination", value: riskAnalysis.risk_components.coordination },
-    { label: "Credibility", value: riskAnalysis.risk_components.credibility },
-    { label: "Divergence", value: riskAnalysis.risk_components.divergence },
+    { label: "Sentiment", value: riskAnalysis.risk_components.sentiment ?? 0 },
+    { label: "Velocity", value: riskAnalysis.risk_components.velocity ?? 0 },
+    { label: "Coordination", value: riskAnalysis.risk_components.coordination ?? 0 },
+    { label: "Credibility", value: riskAnalysis.risk_components.credibility ?? 0 },
+    { label: "Divergence", value: riskAnalysis.risk_components.divergence ?? 0 },
   ]
 
   return (

@@ -20,8 +20,12 @@ interface AlertBannerProps {
 }
 
 export function AlertBanner({ cluster }: AlertBannerProps) {
-  const tierConfig = TIER_CONFIG[cluster.risk_analysis.risk_tier] || TIER_CONFIG["ACTION"];
-  const isHighRisk = cluster.risk_analysis.risk_score >= 70;
+  // Safety checks for nested properties
+  const riskTier = cluster?.risk_analysis?.risk_tier || "ACTION";
+  const riskScore = cluster?.risk_analysis?.risk_score ?? 0;
+
+  const tierConfig = TIER_CONFIG[riskTier] || TIER_CONFIG["ACTION"];
+  const isHighRisk = riskScore >= 70;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [responsePreview, setResponsePreview] = useState<string>("");
 
@@ -67,7 +71,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
                   <p
                     className={`text-2xl font-bold mt-1 ${isHighRisk ? "text-destructive" : "text-yellow-500"}`}
                   >
-                    {cluster.risk_analysis.risk_score.toFixed(1)}%
+                    {riskScore.toFixed(1)}%
                   </p>
                 </div>
                 <div className="mt-4">
