@@ -1,17 +1,23 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card } from "@/components/ui/card"
-import { ChevronLeft } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useClusters } from "@/lib/hooks/queries/use-clusters"
 import { DataTable } from "@/components/ui/data-table"
 import { clustersColumns } from "@/components/tables/clusters-columns"
 
 export default function AllAlertsPage() {
   const router = useRouter()
-  const { data, isLoading, error } = useClusters({ limit: 50 })
+  const [page, setPage] = useState(1)
+  const pageSize = 10
+
+  const { data, isLoading, error } = useClusters({ page, page_size: pageSize })
 
   const clusters = data?.clusters || []
+  const totalPages = Math.ceil((data?.total || 0) / pageSize)
 
   return (
     <main className="min-h-screen bg-background">
@@ -58,6 +64,35 @@ export default function AllAlertsPage() {
               searchKey="narrative"
               searchPlaceholder="Search clusters..."
             />
+
+            {/* Pagination Controls */}
+            <div className="px-6 py-4 border-t border-border/50 flex items-center justify-between">
+              <div className="text-sm text-muted-foreground">
+                Showing page {page} of {totalPages} ({data?.total || 0} total clusters)
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  className="gap-1"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
+                  className="gap-1"
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </Card>
         )}
       </div>

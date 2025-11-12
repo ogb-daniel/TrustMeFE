@@ -37,8 +37,8 @@ const viralityData = [
 export default function Dashboard() {
   const router = useRouter();
   const { data, isLoading, error } = useClusters({
-    sort: "velocity_desc",
-    limit: 10,
+    page: 1,
+    page_size: 3, // Show only 3 clusters on dashboard
   });
 
   const clusters = data?.clusters || [];
@@ -118,7 +118,7 @@ export default function Dashboard() {
               </p>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </div>
-            <MajorSentimentAnalysis sentiment={highestRiskCluster?.sentiment} />
+            {/* <MajorSentimentAnalysis sentiment={highestRiskCluster?.sentiment} /> */}
           </Card>
         </div>
         <Card className="p-6 bg-card border border-border/50 mb-8">

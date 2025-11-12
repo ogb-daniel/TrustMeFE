@@ -3,10 +3,8 @@
 import { useRouter, useParams } from "next/navigation";
 import { AlertBanner } from "@/components/alert-banner";
 import { SentimentAnalysis } from "@/components/sentiment-analysis";
-import { ViralityGraph } from "@/components/virality-graph";
 import { RiskBreakdown } from "@/components/risk-breakdown";
 import { EvidenceSection } from "@/components/evidence-section";
-import { TelemetryCheck } from "@/components/telemetry-check";
 import { ChevronLeft } from "lucide-react";
 import { useClusterDetail } from "@/lib/hooks/queries/use-cluster-detail";
 import { useRiskAnalysis } from "@/lib/hooks/queries/use-risk-analysis";
@@ -105,9 +103,13 @@ export default function AlertDetailPage() {
           )}
 
           {/* Right Column: Virality */}
-          {cluster && (
+          {/* TODO: Velocity chart data not available in current API */}
+          {cluster && false && (
             <div className="lg:col-span-2">
-              <ViralityGraph velocityData={cluster.velocity_chart} />
+              <div className="p-6 rounded-lg border border-border/50 bg-card">
+                <h2 className="text-lg font-semibold mb-4">Virality Over Time</h2>
+                <p className="text-sm text-muted-foreground">Velocity chart data coming soon...</p>
+              </div>
             </div>
           )}
         </div>
@@ -123,15 +125,43 @@ export default function AlertDetailPage() {
           {/* Right Column: Evidence */}
           {cluster && (
             <div className="lg:col-span-2">
-              <EvidenceSection posts={cluster.top_posts} />
+              <EvidenceSection posts={cluster.posts} />
             </div>
           )}
         </div>
 
-        {/* Telemetry Check */}
-        {riskAnalysis && (
-          <div className="max-w-2xl">
-            <TelemetryCheck telemetryCheck={riskAnalysis.telemetry_check} />
+        {/* Divergence Analysis */}
+        {riskAnalysis && riskAnalysis.divergence_analysis && (
+          <div className="max-w-4xl">
+            <Card className="p-6 bg-card border border-border/50">
+              <h2 className="text-lg font-semibold text-foreground mb-6">Divergence Analysis</h2>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-2">Divergence Score</p>
+                  <p className="text-2xl font-bold text-destructive">{(riskAnalysis.divergence_analysis.divergence_score * 100).toFixed(1)}%</p>
+                </div>
+                {riskAnalysis.divergence_analysis.contradictions && riskAnalysis.divergence_analysis.contradictions.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-2">Contradictions</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      {riskAnalysis.divergence_analysis.contradictions.map((contradiction, i) => (
+                        <li key={i} className="text-sm text-muted-foreground">{contradiction}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {riskAnalysis.divergence_analysis.supports && riskAnalysis.divergence_analysis.supports.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-2">Supports</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      {riskAnalysis.divergence_analysis.supports.map((support, i) => (
+                        <li key={i} className="text-sm text-muted-foreground">{support}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </Card>
           </div>
         )}
       </div>
