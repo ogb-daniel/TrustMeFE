@@ -1,43 +1,23 @@
-import { Tier } from "./api";
-
 export interface RiskAnalysis {
   cluster_id: string;
+  narrative: string;
   risk_score: number;
-  tier: Tier;
-  confidence: number;
-  components: RiskComponents;
-  telemetry_check: TelemetryCheck;
-  contradictions: Evidence[];
-  supports: Evidence[];
-  rag_mode: "full" | "telemetry_only" | "insufficient_data";
-  rag_available: boolean;
-  explanation: string[];
+  risk_tier: "MONITOR" | "ALERT" | "ACTION" | "INFORM" | "WATCH" | "CRISIS"; // Support both new and legacy tier names
+  risk_components: {
+    sentiment: number;
+    velocity: number;
+    coordination: number;
+    credibility: number;
+    divergence: number;
+  };
+  divergence_analysis: {
+    divergence_score: number;
+    contradictions: string[];
+    supports: string[];
+    rag_available: boolean;
+    confidence: number;
+    mode: string;
+  };
   recommendations: string[];
-}
-
-export interface RiskComponents {
-  rule_risk: number;
-  ml_probability: number;
-  sentiment_fear: number;
-  sentiment_anger: number;
-  sentiment_urgency: number;
-  virality: number;
-  source_credibility: number;
-  factuality_score: number;
-  coordination_score: number;
-}
-
-export interface TelemetryCheck {
-  mismatch: boolean;
-  metric: string;
-  claim_assertion: string;
-  actual_value: string;
-  explanation: string;
-}
-
-export interface Evidence {
-  text: string;
-  source: string;
-  authority: number;
-  page?: number;
+  timestamp: string;
 }

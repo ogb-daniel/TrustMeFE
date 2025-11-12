@@ -3,87 +3,90 @@ import { mockPosts } from "./posts";
 
 export const mockClusters: Cluster[] = [
   {
-    id: "cluster_crisis_001",
+    cluster_id: "cluster_action_001",
     narrative: "Bank X ATMs failing nationwide - customers unable to withdraw",
-    size: 47,
-    velocity: 34.6,
+    post_count: 47,
     first_seen: "2025-11-10T09:45:00Z",
-    last_updated: "2025-11-10T10:15:00Z",
-    entities: {
-      ORG: ["Bank X", "CBN"],
-      GPE: ["Lagos", "Abuja", "Kano"],
-      PRODUCT: ["ATM"],
-    },
-    coordination_score: 0.87,
-    sentiment: {
-      positive: 12,
-      neutral: 10,
-      negative: 78,
-    },
-    risk_score: 87,
-    tier: "CRISIS",
-    confidence: 0.85,
-    top_posts: mockPosts.slice(0, 3),
+    last_seen: "2025-11-10T10:15:00Z",
+    risk_score: 87.5,
+    risk_tier: "ACTION",
+    total_engagement: 4521,
   },
   {
-    id: "cluster_action_001",
+    cluster_id: "cluster_action_002",
     narrative: "Data breach rumors spreading on social media",
-    size: 32,
-    velocity: 18.3,
+    post_count: 32,
     first_seen: "2025-11-10T08:30:00Z",
-    last_updated: "2025-11-10T09:45:00Z",
-    entities: {
-      ORG: ["Bank X"],
-      PRODUCT: ["Mobile App"],
-    },
-    coordination_score: 0.62,
-    sentiment: {
-      positive: 18,
-      neutral: 15,
-      negative: 67,
-    },
-    risk_score: 72,
-    tier: "ACTION",
-    confidence: 0.78,
-    top_posts: mockPosts.slice(0, 2),
+    last_seen: "2025-11-10T09:45:00Z",
+    risk_score: 72.3,
+    risk_tier: "ACTION",
+    total_engagement: 2890,
   },
   {
-    id: "cluster_watch_001",
+    cluster_id: "cluster_alert_001",
     narrative: "Long wait times at customer service centers",
-    size: 15,
-    velocity: 5.2,
+    post_count: 15,
     first_seen: "2025-11-09T14:20:00Z",
-    last_updated: "2025-11-10T10:00:00Z",
-    entities: {
-      ORG: ["Bank X"],
-      GPE: ["Abuja"],
-    },
-    coordination_score: 0.23,
-    sentiment: {
-      positive: 35,
-      neutral: 28,
-      negative: 37,
-    },
-    risk_score: 48,
-    tier: "WATCH",
-    confidence: 0.65,
-    top_posts: mockPosts.slice(0, 1),
+    last_seen: "2025-11-10T10:00:00Z",
+    risk_score: 48.2,
+    risk_tier: "ALERT",
+    total_engagement: 890,
   },
 ];
 
 export const mockClusterDetail: ClusterDetail = {
-  ...mockClusters[0],
-  all_posts: mockPosts,
-  velocity_chart: [
-    { time: "2025-11-10T09:00:00Z", count: 2 },
-    { time: "2025-11-10T09:15:00Z", count: 8 },
-    { time: "2025-11-10T09:30:00Z", count: 15 },
-    { time: "2025-11-10T09:45:00Z", count: 22 },
-    { time: "2025-11-10T10:00:00Z", count: 34 },
-    { time: "2025-11-10T10:15:00Z", count: 47 },
+  cluster_id: "cluster_action_001",
+  narrative: "Bank X ATMs failing nationwide - customers unable to withdraw",
+  post_count: 47,
+  posts: mockPosts,
+  risk_analysis: {
+    risk_score: 87.5,
+    risk_tier: "ACTION",
+    components: {
+      sentiment: 78.0,
+      velocity: 85.2,
+      coordination: 67.5,
+      credibility: 45.0,
+      divergence: 92.3,
+    },
+  },
+  divergence_analysis: {
+    divergence_score: 0.923,
+    contradictions: [
+      "Internal telemetry shows 97.3% ATM uptime (234/240 machines operational)",
+      "CBN confirms ATM systems operating normally as of Q3 2024",
+    ],
+    supports: [],
+    rag_available: true,
+  },
+  sentiment_breakdown: {
+    negative: 78,
+    neutral: 10,
+    positive: 12,
+  },
+  top_authors: [
+    {
+      handle: "@viral_news_ng",
+      post_count: 8,
+      verified: false,
+      follower_count: 25000,
+    },
+    {
+      handle: "@concerned_citizen",
+      post_count: 5,
+      verified: true,
+      follower_count: 150000,
+    },
   ],
+  engagement_stats: {
+    total_likes: 3450,
+    total_retweets: 892,
+    total_replies: 179,
+  },
+  created_at: "2025-11-10T09:30:00Z",
+  updated_at: "2025-11-10T10:15:00Z",
 };
 
 export const findMockCluster = (id: string): Cluster | undefined => {
-  return mockClusters.find((c) => c.id === id);
+  return mockClusters.find((c) => c.cluster_id === id);
 };

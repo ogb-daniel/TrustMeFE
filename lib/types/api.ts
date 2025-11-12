@@ -18,7 +18,7 @@ export interface ApiError {
   request_id?: string;
 }
 
-export type Tier = "INFORM" | "WATCH" | "ACTION" | "CRISIS";
+export type Tier = "MONITOR" | "ALERT" | "ACTION";
 export type Source = "twitter" | "facebook" | "synthetic";
 export type AlertStatus = "pending_approval" | "approved" | "rejected";
 export type RejectReason = "false_alarm" | "duplicate" | "not_crisis" | "other";
