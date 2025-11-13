@@ -30,7 +30,7 @@ export const useClusters = (
       return clustersApi.list(filters);
     },
     staleTime: 30000, // 30 seconds
-    refetchInterval: 60000, // Refetch every minute
+    // refetchInterval: 60000, // Refetch every minute
     ...options,
   });
 };

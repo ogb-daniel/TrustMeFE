@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,10 +20,13 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useClusters } from "@/lib/hooks/queries/use-clusters";
+import { useDashboardStats } from "@/lib/hooks/queries/use-dashboard-stats";
 import { DataTable } from "@/components/ui/data-table";
 import { clustersColumns } from "@/components/tables/clusters-columns";
 import { MajorSentimentAnalysis } from "@/components/major-sentiment-analysis";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { DashboardStats } from "@/components/dashboard-stats";
+import type { Period } from "@/lib/types/dashboard";
 
 // Mock virality data for the chart (this would come from analytics in production)
 const viralityData = [
@@ -35,11 +39,32 @@ const viralityData = [
   { day: "Sun", mentions: 980 },
 ];
 
+const COMPARISON_PERIODS: { value: Period; label: string }[] = [
+  { value: "yesterday", label: "Yesterday" },
+  { value: "last_week", label: "Last Week" },
+  { value: "last_month", label: "Last Month" },
+  { value: "last_quarter", label: "Last Quarter" },
+  { value: "last_year", label: "Last Year" },
+];
+
 export default function Dashboard() {
   const router = useRouter();
+  const [comparisonPeriod, setComparisonPeriod] = useState<Period>("yesterday");
+
   const { data, isLoading, error } = useClusters({
     page: 1,
     page_size: 3, // Show only 3 clusters on dashboard
+  });
+
+  const {
+    data: statsData,
+    isLoading: isLoadingStats,
+    error: statsError,
+  } = useDashboardStats({
+    period: "current",
+    comparison: comparisonPeriod,
+    include_interpretation: true,
+    save_to_db: true,
   });
 
   const clusters = data?.clusters || [];
@@ -62,10 +87,65 @@ export default function Dashboard() {
             <ThemeSwitcher />
           </div>
 
-          <p className="text-muted-foreground mt-2">
-            Real-time monitoring of misinformation and reputational threats
-          </p>
+          <div className="flex items-center justify-between mt-4">
+            <p className="text-muted-foreground">
+              Real-time monitoring of misinformation and reputational threats
+            </p>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                Compare with:
+              </span>
+              <select
+                value={comparisonPeriod}
+                onChange={(e) => setComparisonPeriod(e.target.value as Period)}
+                className="px-3 py-1.5 text-sm bg-background border border-border/50 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                {COMPARISON_PERIODS.map((period) => (
+                  <option key={period.value} value={period.value}>
+                    {period.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
+
+        {/* Dashboard Statistics */}
+        {isLoadingStats ? (
+          <div className="space-y-6 mb-8">
+            <div className="h-48 bg-muted animate-pulse rounded-lg" />
+            <div className="h-48 bg-muted animate-pulse rounded-lg" />
+          </div>
+        ) : statsError ? (
+          <Card className="p-6 bg-card border border-border/50 mb-8">
+            <p className="text-sm text-destructive">
+              Failed to load statistics: {statsError.message}
+            </p>
+          </Card>
+        ) : statsData ? (
+          <div className="mb-8">
+            {statsData.interpretation && (
+              <Card className="p-6 bg-card border border-border/50 mb-8">
+                <div className="flex items-center justify-between">
+                  <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
+                    Highlights
+                  </p>
+                </div>
+                {isLoading ? (
+                  <div className="h-10 w-24 bg-muted animate-pulse rounded mt-2" />
+                ) : (
+                  <p className="text-4xl font-bold text-foreground mt-2">
+                    {statsData.interpretation.summary}
+                  </p>
+                )}
+              </Card>
+            )}
+            <DashboardStats
+              current={statsData.stats.current}
+              comparison={statsData.stats.comparison}
+            />
+          </div>
+        ) : null}
 
         {/* Quick Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

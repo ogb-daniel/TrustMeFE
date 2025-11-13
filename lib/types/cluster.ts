@@ -45,12 +45,51 @@ export interface TelemetryMetrics {
   [key: string]: any; // Allow for other metric types
 }
 
-export interface Telemetry {
-  type: string;
+export interface TelemetryTimelinePoint {
   timestamp: string;
-  metrics: TelemetryMetrics;
-  severity: "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
-  confirms_narrative: boolean;
+  cpu_percent?: number;
+  memory_percent?: number;
+  api_calls?: number;
+  avg_latency_ms?: number;
+  error_rate?: number;
+  active_connections?: number;
+  [key: string]: any; // Allow for other metric types
+}
+
+export interface TelemetrySummary {
+  avg_cpu?: number;
+  peak_cpu?: number;
+  avg_memory?: number;
+  peak_memory?: number;
+  total_api_calls?: number;
+  avg_latency?: number;
+  peak_latency?: number;
+  alert_count?: number;
+  health_status?: string;
+  [key: string]: any;
+}
+
+export interface TelemetryMetadata {
+  collection_started?: string;
+  collection_ended?: string;
+  data_points?: number;
+  cluster_tier?: string;
+  monitored_posts?: number;
+  [key: string]: any;
+}
+
+export interface Telemetry {
+  // Market data structure
+  type?: string;
+  timestamp?: string;
+  metrics?: TelemetryMetrics;
+  severity?: "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
+  confirms_narrative?: boolean;
+
+  // System monitoring structure
+  timeline?: TelemetryTimelinePoint[];
+  summary?: TelemetrySummary;
+  metadata?: TelemetryMetadata;
 }
 
 export interface DivergenceAnalysis {

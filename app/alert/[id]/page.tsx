@@ -6,7 +6,6 @@ import { SentimentAnalysis } from "@/components/sentiment-analysis";
 import { RiskBreakdown } from "@/components/risk-breakdown";
 import { EvidenceSection } from "@/components/evidence-section";
 import { TelemetryCheck } from "@/components/telemetry-check";
-import { TelemetryData } from "@/components/telemetry-data";
 import { ChevronLeft } from "lucide-react";
 import { useClusterDetail } from "@/lib/hooks/queries/use-cluster-detail";
 import { useRiskAnalysis } from "@/lib/hooks/queries/use-risk-analysis";
@@ -139,7 +138,7 @@ export default function AlertDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Telemetry Check */}
             {cluster?.divergence_analysis?.telemetry_check &&
-              cluster.telemetry && (
+              cluster?.telemetry && (
                 <div>
                   <TelemetryCheck
                     telemetryCheck={cluster.divergence_analysis.telemetry_check}

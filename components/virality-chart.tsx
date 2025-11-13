@@ -20,10 +20,10 @@ interface ViralityChartProps {
 export function ViralityChart({ virality }: ViralityChartProps) {
   // Format the timeline data for the chart
   const chartData = virality.timeline.map((point) => ({
-    hour: `${point.hour}h`,
+    hour: point.hour,
     posts: point.post_count,
     engagement: Math.round(point.engagement / 1000), // Convert to thousands
-    velocity: point.velocity.toFixed(1),
+    velocity: Number(point.velocity.toFixed(1)), // Keep as number for charting
   }));
 
   const formatNumber = (num: number): string => {
@@ -86,16 +86,22 @@ export function ViralityChart({ virality }: ViralityChartProps) {
               dataKey="hour"
               stroke="hsl(var(--muted-foreground))"
               fontSize={12}
+              label={{
+                value: "Time (Hours)",
+                position: "insideBottom",
+                offset: -5,
+                style: { fill: "hsl(var(--muted-foreground))" },
+              }}
             />
             <YAxis
               yAxisId="left"
               stroke="hsl(var(--muted-foreground))"
               fontSize={12}
               label={{
-                value: "Posts",
+                value: "Posts / Velocity",
                 angle: -90,
                 position: "insideLeft",
-                style: { fill: "hsl(var(--muted-foreground))" },
+                style: { fill: "hsl(var(--muted-foreground))", textAnchor: "middle" },
               }}
             />
             <YAxis
@@ -107,7 +113,7 @@ export function ViralityChart({ virality }: ViralityChartProps) {
                 value: "Engagement (K)",
                 angle: 90,
                 position: "insideRight",
-                style: { fill: "hsl(var(--muted-foreground))" },
+                style: { fill: "hsl(var(--muted-foreground))", textAnchor: "middle" },
               }}
             />
             <Tooltip
@@ -117,34 +123,47 @@ export function ViralityChart({ virality }: ViralityChartProps) {
                 borderRadius: "6px",
                 color: "hsl(var(--foreground))",
               }}
+              labelStyle={{ color: "hsl(var(--foreground))" }}
+              formatter={(value: number, name: string) => {
+                if (name === "Engagement (K)") {
+                  return [`${value}K`, name];
+                }
+                return [value, name];
+              }}
             />
             <Legend />
             <Line
               yAxisId="left"
               type="monotone"
               dataKey="posts"
-              stroke="hsl(var(--chart-1))"
+              stroke="#8B5CF6"
               strokeWidth={2}
-              dot={{ fill: "hsl(var(--chart-1))", r: 4 }}
+              dot={{ fill: "#8B5CF6", r: 4 }}
+              activeDot={{ r: 6 }}
               name="Post Count"
+              connectNulls
             />
             <Line
               yAxisId="right"
               type="monotone"
               dataKey="engagement"
-              stroke="hsl(var(--chart-2))"
+              stroke="#10B981"
               strokeWidth={2}
-              dot={{ fill: "hsl(var(--chart-2))", r: 4 }}
+              dot={{ fill: "#10B981", r: 4 }}
+              activeDot={{ r: 6 }}
               name="Engagement (K)"
+              connectNulls
             />
             <Line
               yAxisId="left"
               type="monotone"
               dataKey="velocity"
-              stroke="hsl(var(--chart-3))"
+              stroke="#F59E0B"
               strokeWidth={2}
-              dot={{ fill: "hsl(var(--chart-3))", r: 4 }}
+              dot={{ fill: "#F59E0B", r: 4 }}
+              activeDot={{ r: 6 }}
               name="Velocity"
+              connectNulls
             />
           </LineChart>
         </ResponsiveContainer>
