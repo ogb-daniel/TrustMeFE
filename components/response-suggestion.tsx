@@ -16,7 +16,12 @@ interface ResponseSuggestionProps {
   onViewFullResponse?: () => void;
 }
 
-export function ResponseSuggestion({ clusterId, generatedResponse, variant = "full", onViewFullResponse }: ResponseSuggestionProps) {
+export function ResponseSuggestion({
+  clusterId,
+  generatedResponse,
+  variant = "full",
+  onViewFullResponse,
+}: ResponseSuggestionProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [response, setResponse] = useState("");
   const [alertId, setAlertId] = useState<string | null>(null);
@@ -26,6 +31,8 @@ export function ResponseSuggestion({ clusterId, generatedResponse, variant = "fu
   const rejectMutation = useRejectAlert();
 
   useEffect(() => {
+    setAlertId(clusterId);
+
     // If generated_response exists in cluster detail, use it
     if (generatedResponse?.text) {
       setResponse(generatedResponse.text);
@@ -87,7 +94,8 @@ export function ResponseSuggestion({ clusterId, generatedResponse, variant = "fu
       );
     }
 
-    const preview = response.length > 120 ? response.substring(0, 120) + "..." : response;
+    const preview =
+      response.length > 120 ? response.substring(0, 120) + "..." : response;
 
     return (
       <>
@@ -167,30 +175,27 @@ export function ResponseSuggestion({ clusterId, generatedResponse, variant = "fu
             </Button>
             <Button
               size="sm"
-              variant="outline"
               onClick={handleApprove}
-              className="border-border/50 text-foreground hover:bg-muted bg-transparent"
+              className="border-border/50 text-foreground hover:bg-green-700 bg-transparent"
               disabled={isLoading || !alertId}
             >
               Approve
             </Button>
             <Button
               size="sm"
-              variant="outline"
               onClick={handleReject}
-              className="border-destructive/20 text-foreground hover:bg-destructive/5 bg-transparent"
+              className="border-destructive/20 text-foreground hover:bg-destructive bg-transparent"
               disabled={isLoading || !alertId}
             >
               False Alarm
             </Button>
-            <Button
+            {/* <Button
               size="sm"
-              variant="outline"
               className="border-border/50 text-foreground hover:bg-muted bg-transparent"
               disabled={isLoading}
             >
               Escalate
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}
