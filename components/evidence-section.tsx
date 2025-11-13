@@ -1,29 +1,31 @@
-"use client"
+"use client";
 
-import { Card } from "@/components/ui/card"
-import { MessageCircle, Share2, Heart } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { Post } from "@/lib/types/post"
+import { Card } from "@/components/ui/card";
+import { MessageCircle, Share2, Heart, BadgeCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Post } from "@/lib/types/post";
 
 interface EvidenceSectionProps {
-  posts: Post[]
-  clusterId: string
+  posts: Post[];
+  clusterId: string;
 }
 
 export function EvidenceSection({ posts, clusterId }: EvidenceSectionProps) {
-  const router = useRouter()
-  const topPosts = posts.slice(0, 3)
+  const router = useRouter();
+  const topPosts = posts.slice(0, 3);
 
   const formatEngagement = (num: number): string => {
     if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}K`
+      return `${(num / 1000).toFixed(1)}K`;
     }
-    return num.toString()
-  }
+    return num.toString();
+  };
 
   return (
     <Card className="p-6 bg-card border border-border/50">
-      <h2 className="text-lg font-semibold text-foreground mb-6">Evidence (Top {topPosts.length} Posts)</h2>
+      <h2 className="text-lg font-semibold text-foreground mb-6">
+        Evidence (Top {topPosts.length} Posts)
+      </h2>
 
       <div className="space-y-4">
         {topPosts.map((post) => (
@@ -33,16 +35,24 @@ export function EvidenceSection({ posts, clusterId }: EvidenceSectionProps) {
           >
             <div className="flex items-start justify-between mb-3">
               <div>
-                <p className="font-medium text-foreground">@{post.author.handle}</p>
+                <p className="font-medium text-foreground flex items-center gap-2">
+                  @{post.author.username}{" "}
+                  {post.author.verified && (
+                    <BadgeCheck className="text-[#1d9bf0]" />
+                  )}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {formatEngagement(post.engagement.retweets)} RTs · {formatEngagement(post.engagement.likes)} likes
+                  {formatEngagement(post.engagement.retweets)} RTs ·{" "}
+                  {formatEngagement(post.engagement.likes)} likes
                 </p>
               </div>
               <span className="text-xs font-semibold bg-muted text-muted-foreground px-2 py-1 rounded capitalize">
                 {post.source}
               </span>
             </div>
-            <p className="text-sm text-foreground leading-relaxed">{post.text}</p>
+            <p className="text-sm text-foreground leading-relaxed">
+              {post.text}
+            </p>
             <div className="flex items-center gap-4 mt-4 pt-3 border-t border-border/30">
               <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
                 <MessageCircle className="h-4 w-4" />
@@ -70,5 +80,5 @@ export function EvidenceSection({ posts, clusterId }: EvidenceSectionProps) {
         </button>
       </div>
     </Card>
-  )
+  );
 }

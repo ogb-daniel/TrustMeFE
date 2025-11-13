@@ -27,7 +27,7 @@ export const useApproveAlert = (
     mutationFn: ({ alertId, request }) => alertsApi.approve(alertId, request),
     onSuccess: (data) => {
       toast.success("Alert approved", {
-        description: `Published to ${data.published_channels?.join(", ")}`,
+        description: `Published`,
       });
 
       // Invalidate queries

@@ -14,7 +14,10 @@ export default function AllAlertsPage() {
   const [page, setPage] = useState(1)
   const pageSize = 10
 
-  const { data, isLoading, error } = useClusters({ page, page_size: pageSize })
+  const { data, isLoading, error } = useClusters(
+    { page, page_size: pageSize },
+    { refetchInterval: false } // Disable polling for this page
+  )
 
   const clusters = data?.clusters || []
   const totalPages = Math.ceil((data?.total || 0) / pageSize)

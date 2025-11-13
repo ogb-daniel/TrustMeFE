@@ -17,6 +17,7 @@ export interface Author {
   follower_count: number;
   account_age_days: number;
   profile_url?: string;
+  username: string;
 }
 
 export interface Engagement {

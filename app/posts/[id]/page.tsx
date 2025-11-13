@@ -2,7 +2,13 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { MessageCircle, Share2, Heart, ChevronLeft } from "lucide-react";
+import {
+  MessageCircle,
+  Share2,
+  Heart,
+  ChevronLeft,
+  BadgeCheck,
+} from "lucide-react";
 import { useClusterDetail } from "@/lib/hooks/queries/use-cluster-detail";
 import { Button } from "@/components/ui/button";
 
@@ -11,11 +17,7 @@ export default function AllPostsPage() {
   const params = useParams();
   const clusterId = params.id as string;
 
-  const {
-    data: cluster,
-    isLoading,
-    error,
-  } = useClusterDetail(clusterId);
+  const { data: cluster, isLoading, error } = useClusterDetail(clusterId);
 
   const formatEngagement = (num: number): string => {
     if (num >= 1000) {
@@ -96,8 +98,11 @@ export default function AllPostsPage() {
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <p className="font-medium text-foreground">
-                    @{post.author.handle}
+                  <p className="font-medium text-foreground flex items-center gap-2">
+                    @{post.author.username}{" "}
+                    {post.author.verified && (
+                      <BadgeCheck className="text-[#1d9bf0]" />
+                    )}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {formatEngagement(post.engagement.retweets)} RTs ·{" "}
