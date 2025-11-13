@@ -69,6 +69,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
                 <div className="mt-2">
                   <ResponseSuggestion
                     clusterId={cluster.cluster_id}
+                    generatedResponse={cluster.generated_response}
                     variant="preview"
                     onViewFullResponse={() => setIsModalOpen(true)}
                   />
@@ -86,7 +87,11 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
             <DialogTitle>Suggested Response</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <ResponseSuggestion clusterId={cluster.cluster_id} variant="full" />
+            <ResponseSuggestion
+              clusterId={cluster.cluster_id}
+              generatedResponse={cluster.generated_response}
+              variant="full"
+            />
           </DialogBody>
         </DialogContent>
       </Dialog>

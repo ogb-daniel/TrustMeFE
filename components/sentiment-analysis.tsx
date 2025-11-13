@@ -22,10 +22,11 @@ export function SentimentAnalysis({ cluster }: SentimentAnalysisProps) {
     )
   }
 
+  // API sends values as decimals (0-1), convert to percentages (0-100)
   const sentiments: SentimentData[] = [
-    { label: "Negative", value: cluster.sentiment_breakdown.negative ?? 0, color: "bg-red-500" },
-    { label: "Positive", value: cluster.sentiment_breakdown.positive ?? 0, color: "bg-emerald-500" },
-    { label: "Neutral", value: cluster.sentiment_breakdown.neutral ?? 0, color: "bg-blue-400" },
+    { label: "Negative", value: (cluster.sentiment_breakdown.negative ?? 0) * 100, color: "bg-red-500" },
+    { label: "Positive", value: (cluster.sentiment_breakdown.positive ?? 0) * 100, color: "bg-emerald-500" },
+    { label: "Neutral", value: (cluster.sentiment_breakdown.neutral ?? 0) * 100, color: "bg-blue-400" },
   ]
 
   return (
@@ -37,7 +38,7 @@ export function SentimentAnalysis({ cluster }: SentimentAnalysisProps) {
           <div key={sentiment.label}>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-foreground">{sentiment.label}</span>
-              <span className="text-sm font-semibold text-muted-foreground">{sentiment.value}%</span>
+              <span className="text-sm font-semibold text-muted-foreground">{sentiment.value.toFixed(1)}%</span>
             </div>
             <div className="h-2.5 rounded-full bg-muted overflow-hidden">
               <div

@@ -18,12 +18,13 @@ export function RiskBreakdown({ riskAnalysis }: RiskBreakdownProps) {
     )
   }
 
+  // API sends values as decimals (0-1), convert to percentages (0-100)
   const metrics = [
-    { label: "Sentiment", value: riskAnalysis.risk_components.sentiment ?? 0 },
-    { label: "Velocity", value: riskAnalysis.risk_components.velocity ?? 0 },
-    { label: "Coordination", value: riskAnalysis.risk_components.coordination ?? 0 },
-    { label: "Credibility", value: riskAnalysis.risk_components.credibility ?? 0 },
-    { label: "Divergence", value: riskAnalysis.risk_components.divergence ?? 0 },
+    { label: "Sentiment", value: (riskAnalysis.risk_components.sentiment ?? 0) * 100 },
+    { label: "Velocity", value: (riskAnalysis.risk_components.velocity ?? 0) * 100 },
+    { label: "Coordination", value: (riskAnalysis.risk_components.coordination ?? 0) * 100 },
+    { label: "Credibility", value: (riskAnalysis.risk_components.credibility ?? 0) * 100 },
+    { label: "Divergence", value: (riskAnalysis.risk_components.divergence ?? 0) * 100 },
   ]
 
   return (

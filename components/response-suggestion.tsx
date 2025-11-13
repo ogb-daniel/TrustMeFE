@@ -7,14 +7,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGenerateResponse } from "@/lib/hooks/mutations/use-generate-response";
 import { useApproveAlert } from "@/lib/hooks/mutations/use-approve-alert";
 import { useRejectAlert } from "@/lib/hooks/mutations/use-reject-alert";
+import { GeneratedResponse } from "@/lib/types/cluster";
 
 interface ResponseSuggestionProps {
   clusterId: string;
+  generatedResponse?: GeneratedResponse;
   variant?: "preview" | "full";
   onViewFullResponse?: () => void;
 }
 
-export function ResponseSuggestion({ clusterId, variant = "full", onViewFullResponse }: ResponseSuggestionProps) {
+export function ResponseSuggestion({ clusterId, generatedResponse, variant = "full", onViewFullResponse }: ResponseSuggestionProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [response, setResponse] = useState("");
   const [alertId, setAlertId] = useState<string | null>(null);
@@ -24,7 +26,14 @@ export function ResponseSuggestion({ clusterId, variant = "full", onViewFullResp
   const rejectMutation = useRejectAlert();
 
   useEffect(() => {
-    if (clusterId) {
+    // If generated_response exists in cluster detail, use it
+    if (generatedResponse?.text) {
+      setResponse(generatedResponse.text);
+      return;
+    }
+
+    // Otherwise, call the generate endpoint as fallback
+    if (clusterId && !generatedResponse) {
       generateMutation.mutate(
         { cluster_id: clusterId },
         {
@@ -35,7 +44,7 @@ export function ResponseSuggestion({ clusterId, variant = "full", onViewFullResp
         }
       );
     }
-  }, [clusterId]);
+  }, [clusterId, generatedResponse]);
 
   const handleApprove = () => {
     if (!alertId) return;
@@ -68,7 +77,8 @@ export function ResponseSuggestion({ clusterId, variant = "full", onViewFullResp
 
   // Preview variant - show just the text with a "Read more" link
   if (variant === "preview") {
-    if (generateMutation.isPending) {
+    // Show loading only if we don't have generated_response and mutation is pending
+    if (!generatedResponse && generateMutation.isPending) {
       return (
         <div className="space-y-2">
           <div className="h-4 w-full bg-muted animate-pulse rounded" />
@@ -102,7 +112,7 @@ export function ResponseSuggestion({ clusterId, variant = "full", onViewFullResp
     <Card className="p-6 bg-card border border-border/50">
       {/* <h2 className="text-lg font-semibold text-foreground mb-6">Suggested Response</h2> */}
 
-      {generateMutation.isPending ? (
+      {!generatedResponse && generateMutation.isPending ? (
         <div className="space-y-4">
           <div className="h-32 bg-muted animate-pulse rounded" />
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
