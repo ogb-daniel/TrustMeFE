@@ -49,6 +49,20 @@ export interface EngagementStats {
   total_replies: number;
 }
 
+export interface GeneratedResponse {
+  text: string;
+  tier: string;
+  generation_method: string;
+  model: string;
+  tokens_used: number;
+  word_count: number;
+  confidence: number;
+  safety_flags: string[];
+  approval_required: boolean;
+  suggested_channels: string[];
+  timestamp: string;
+}
+
 export interface ClusterDetail {
   cluster_id: string;
   narrative: string;
@@ -59,6 +73,7 @@ export interface ClusterDetail {
   sentiment_breakdown: SentimentBreakdown;
   top_authors: TopAuthor[];
   engagement_stats: EngagementStats;
+  generated_response?: GeneratedResponse;
   created_at: string;
   updated_at: string;
 }
