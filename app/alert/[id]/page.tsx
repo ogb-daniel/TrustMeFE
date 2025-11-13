@@ -129,7 +129,7 @@ export default function AlertDetailPage() {
           {/* Right Column: Evidence */}
           {cluster && (
             <div className="lg:col-span-2">
-              <EvidenceSection posts={cluster.posts} />
+              <EvidenceSection posts={cluster.posts} clusterId={clusterId} />
             </div>
           )}
         </div>

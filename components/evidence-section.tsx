@@ -7,9 +7,10 @@ import { Post } from "@/lib/types/post"
 
 interface EvidenceSectionProps {
   posts: Post[]
+  clusterId: string
 }
 
-export function EvidenceSection({ posts }: EvidenceSectionProps) {
+export function EvidenceSection({ posts, clusterId }: EvidenceSectionProps) {
   const router = useRouter()
   const topPosts = posts.slice(0, 3)
 
@@ -62,7 +63,7 @@ export function EvidenceSection({ posts }: EvidenceSectionProps) {
 
       <div className="mt-5 text-center">
         <button
-          onClick={() => router.push("/posts")}
+          onClick={() => router.push(`/posts/${clusterId}`)}
           className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
           View all {posts.length} posts →
