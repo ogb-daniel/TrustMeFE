@@ -20,8 +20,8 @@ interface AlertBannerProps {
 
 export function AlertBanner({ cluster }: AlertBannerProps) {
   // Safety checks for nested properties
-  const riskTier = cluster?.risk_analysis?.risk_tier || "ACTION";
-  const riskScore = cluster?.risk_analysis?.risk_score ?? 0;
+  const riskTier = cluster?.risk_tier || "ACTION";
+  const riskScore = cluster?.risk_score ?? 0;
 
   const tierConfig = TIER_CONFIG[riskTier] || TIER_CONFIG["ACTION"];
   const isHighRisk = riskScore >= 70;

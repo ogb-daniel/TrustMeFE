@@ -46,22 +46,6 @@ export default function Dashboard() {
   const totalAlerts = data?.total || 0;
   const highestRiskCluster = clusters[0];
 
-  if (error) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="p-6 bg-card border border-border/50 max-w-md">
-          <h2 className="text-lg font-semibold text-destructive mb-2">
-            Error Loading Dashboard
-          </h2>
-          <p className="text-muted-foreground">{error.message}</p>
-          <Button onClick={() => window.location.reload()} className="mt-4">
-            Retry
-          </Button>
-        </Card>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -193,9 +177,9 @@ export default function Dashboard() {
             <h2 className="text-lg font-semibold text-foreground">
               Trending Narratives
             </h2>
-            <p className="text-sm text-muted-foreground mt-1">
+            {/* <p className="text-sm text-muted-foreground mt-1">
               Sorted by velocity (posts/hour)
-            </p>
+            </p> */}
           </div>
 
           {isLoading ? (
@@ -209,7 +193,31 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <DataTable columns={clustersColumns} data={clusters} />
+            <>
+              {error && (
+                <div className="px-6 pt-6">
+                  <div className="flex items-center justify-between p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-destructive">
+                        Failed to load clusters
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {error.message}
+                      </p>
+                    </div>
+                    <Button
+                      onClick={() => window.location.reload()}
+                      variant="outline"
+                      size="sm"
+                      className="border-destructive/20"
+                    >
+                      Retry
+                    </Button>
+                  </div>
+                </div>
+              )}
+              <DataTable columns={clustersColumns} data={clusters} />
+            </>
           )}
 
           <div className="px-6 py-4 border-t border-border/50 bg-background/50">

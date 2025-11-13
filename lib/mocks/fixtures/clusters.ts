@@ -58,6 +58,25 @@ export const mockClusterDetail: ClusterDetail = {
     ],
     supports: [],
     rag_available: true,
+    telemetry_check: {
+      mismatch: false,
+      explanation: "Telemetry does not contradict claim",
+      confidence: 0.5,
+    },
+  },
+  telemetry: {
+    type: "FOREX_MARKET_DATA",
+    timestamp: "2025-11-12T17:24:01.651453",
+    metrics: {
+      official_rate: 750.5,
+      parallel_market_rate: 1205.75,
+      rate_divergence_pct: 60.7,
+      daily_volume_usd: 245000000,
+      volatility_index: 8.9,
+      liquidity_stress_level: "SEVERE",
+    },
+    severity: "CRITICAL",
+    confirms_narrative: true,
   },
   sentiment_breakdown: {
     negative: 78,

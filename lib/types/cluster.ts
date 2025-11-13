@@ -29,11 +29,41 @@ export interface RiskAnalysisSummary {
   };
 }
 
+export interface TelemetryCheck {
+  mismatch: boolean;
+  explanation: string;
+  confidence: number;
+}
+
+export interface TelemetryMetrics {
+  official_rate?: number;
+  parallel_market_rate?: number;
+  rate_divergence_pct?: number;
+  daily_volume_usd?: number;
+  volatility_index?: number;
+  liquidity_stress_level?: string;
+  [key: string]: any; // Allow for other metric types
+}
+
+export interface Telemetry {
+  type: string;
+  timestamp: string;
+  metrics: TelemetryMetrics;
+  severity: "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
+  confirms_narrative: boolean;
+}
+
 export interface DivergenceAnalysis {
   divergence_score: number;
+  factuality_score?: number;
+  mode?: string;
   contradictions: string[];
   supports: string[];
   rag_available: boolean;
+  telemetry_check?: TelemetryCheck;
+  confidence?: number;
+  explanation?: string[];
+  timestamp?: string;
 }
 
 export interface TopAuthor {
@@ -103,8 +133,11 @@ export interface ClusterDetail {
   engagement_stats: EngagementStats;
   generated_response?: GeneratedResponse;
   virality?: Virality;
+  telemetry?: Telemetry;
   created_at: string;
   updated_at: string;
+  risk_tier: string;
+  risk_score: number;
 }
 
 export interface ClustersResponse {
