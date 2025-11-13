@@ -10,6 +10,8 @@ import { useClusterDetail } from "@/lib/hooks/queries/use-cluster-detail";
 import { useRiskAnalysis } from "@/lib/hooks/queries/use-risk-analysis";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ViralityChart } from "@/components/virality-chart";
 
 export default function AlertDetailPage() {
   const router = useRouter();
@@ -71,14 +73,17 @@ export default function AlertDetailPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-background via-background to-background/95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back to Dashboard
-        </button>
+        {/* Back Button and Theme Switcher */}
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back to Dashboard
+          </button>
+          <ThemeSwitcher />
+        </div>
 
         {/* Header */}
         <div className="mb-8">
@@ -103,17 +108,9 @@ export default function AlertDetailPage() {
           )}
 
           {/* Right Column: Virality */}
-          {/* TODO: Velocity chart data not available in current API */}
-          {cluster && false && (
+          {cluster?.virality && (
             <div className="lg:col-span-2">
-              <div className="p-6 rounded-lg border border-border/50 bg-card">
-                <h2 className="text-lg font-semibold mb-4">
-                  Virality Over Time
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Velocity chart data coming soon...
-                </p>
-              </div>
+              <ViralityChart virality={cluster.virality} />
             </div>
           )}
         </div>

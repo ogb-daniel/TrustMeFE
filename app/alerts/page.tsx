@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useClusters } from "@/lib/hooks/queries/use-clusters"
 import { DataTable } from "@/components/ui/data-table"
 import { clustersColumns } from "@/components/tables/clusters-columns"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 export default function AllAlertsPage() {
   const router = useRouter()
@@ -25,14 +26,17 @@ export default function AllAlertsPage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back
-        </button>
+        {/* Back Button and Theme Switcher */}
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+          <ThemeSwitcher />
+        </div>
 
         {/* Header */}
         <div className="mb-8">

@@ -63,6 +63,34 @@ export interface GeneratedResponse {
   timestamp: string;
 }
 
+export interface ViralityTimelinePoint {
+  hour: number;
+  post_count: number;
+  cumulative_posts: number;
+  engagement: number;
+  cumulative_engagement: number;
+  velocity: number;
+}
+
+export interface ViralityMetrics {
+  total_posts: number;
+  total_engagement: number;
+  unique_accounts: number;
+  duration_hours: number;
+  avg_velocity: number;
+  peak_velocity: number;
+  peak_hour: number;
+  spread_score: number;
+  virality_index: number;
+  engagement_per_post: number;
+}
+
+export interface Virality {
+  timeline: ViralityTimelinePoint[];
+  metrics: ViralityMetrics;
+  computed_at: string;
+}
+
 export interface ClusterDetail {
   cluster_id: string;
   narrative: string;
@@ -74,6 +102,7 @@ export interface ClusterDetail {
   top_authors: TopAuthor[];
   engagement_stats: EngagementStats;
   generated_response?: GeneratedResponse;
+  virality?: Virality;
   created_at: string;
   updated_at: string;
 }

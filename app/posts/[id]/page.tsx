@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useClusterDetail } from "@/lib/hooks/queries/use-cluster-detail";
 import { Button } from "@/components/ui/button";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function AllPostsPage() {
   const router = useRouter();
@@ -67,14 +68,17 @@ export default function AllPostsPage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back
-        </button>
+        {/* Back Button and Theme Switcher */}
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+          <ThemeSwitcher />
+        </div>
 
         {/* Header */}
         <div className="mb-8">

@@ -22,6 +22,7 @@ import { useClusters } from "@/lib/hooks/queries/use-clusters";
 import { DataTable } from "@/components/ui/data-table";
 import { clustersColumns } from "@/components/tables/clusters-columns";
 import { MajorSentimentAnalysis } from "@/components/major-sentiment-analysis";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 // Mock virality data for the chart (this would come from analytics in production)
 const viralityData = [
@@ -66,13 +67,16 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-            <button className="hover:text-foreground transition-colors">
-              Dashboard
-            </button>
-            <ChevronRight className="h-4 w-4" />
-            <span className="text-foreground font-medium">Alerts</span>
-          </nav>
+          <div className="flex items-center justify-between mb-3">
+            <nav className="flex items-center gap-2 text-sm text-muted-foreground">
+              <button className="text-foreground transition-colors">
+                Dashboard
+              </button>
+              {/* <ChevronRight className="h-4 w-4" />
+              <span className="text-foreground font-medium">Alerts</span> */}
+            </nav>
+            <ThemeSwitcher />
+          </div>
 
           <p className="text-muted-foreground mt-2">
             Real-time monitoring of misinformation and reputational threats
