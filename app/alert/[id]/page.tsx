@@ -131,18 +131,18 @@ export default function AlertDetailPage() {
         </div>
 
         {/* Telemetry Check - Contradictions and Supports */}
-        {cluster?.divergence_analysis && (cluster.divergence_analysis.contradictions?.length > 0 || cluster.divergence_analysis.supports?.length > 0) && (
+        {riskAnalysis && riskAnalysis.divergence_analysis && (
           <div className="mb-6">
             <Card className="p-6 bg-card border border-border/50">
               <h2 className="text-lg font-semibold text-foreground mb-6">Telemetry Check</h2>
               <div className="space-y-4">
-                {cluster.divergence_analysis.contradictions && cluster.divergence_analysis.contradictions.length > 0 && (
+                {riskAnalysis.divergence_analysis.contradictions && riskAnalysis.divergence_analysis.contradictions.length > 0 && (
                   <div>
                     <p className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
                       <span className="text-destructive">⚠️</span> Contradictions Found
                     </p>
                     <div className="space-y-2">
-                      {cluster.divergence_analysis.contradictions.map((contradiction, i) => (
+                      {riskAnalysis.divergence_analysis.contradictions.map((contradiction, i) => (
                         <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-destructive/5 border border-destructive/20">
                           <div className="flex-1">
                             <p className="text-sm text-foreground">{contradiction}</p>
@@ -152,13 +152,13 @@ export default function AlertDetailPage() {
                     </div>
                   </div>
                 )}
-                {cluster.divergence_analysis.supports && cluster.divergence_analysis.supports.length > 0 && (
+                {riskAnalysis.divergence_analysis.supports && riskAnalysis.divergence_analysis.supports.length > 0 && (
                   <div>
                     <p className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
                       <span className="text-emerald-500">✓</span> Supporting Evidence
                     </p>
                     <div className="space-y-2">
-                      {cluster.divergence_analysis.supports.map((support, i) => (
+                      {riskAnalysis.divergence_analysis.supports.map((support, i) => (
                         <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
                           <div className="flex-1">
                             <p className="text-sm text-foreground">{support}</p>
@@ -167,6 +167,10 @@ export default function AlertDetailPage() {
                       ))}
                     </div>
                   </div>
+                )}
+                {(!riskAnalysis.divergence_analysis.contradictions || riskAnalysis.divergence_analysis.contradictions.length === 0) &&
+                 (!riskAnalysis.divergence_analysis.supports || riskAnalysis.divergence_analysis.supports.length === 0) && (
+                  <p className="text-sm text-muted-foreground">No telemetry data available for this cluster.</p>
                 )}
               </div>
             </Card>

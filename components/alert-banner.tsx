@@ -3,8 +3,7 @@
 import { AlertTriangle } from "lucide-react";
 import { ClusterDetail } from "@/lib/types/cluster";
 import { TIER_CONFIG } from "@/lib/constants/tiers";
-import { useGenerateResponse } from "@/lib/hooks/mutations/use-generate-response";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -27,28 +26,6 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
   const tierConfig = TIER_CONFIG[riskTier] || TIER_CONFIG["ACTION"];
   const isHighRisk = riskScore >= 70;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [responsePreview, setResponsePreview] = useState<string>("");
-
-  const generateMutation = useGenerateResponse();
-
-  useEffect(() => {
-    if (cluster.cluster_id) {
-      generateMutation.mutate(
-        { cluster_id: cluster.cluster_id },
-        {
-          onSuccess: (data) => {
-            const fullResponse = data.response_text || "";
-            // Create preview: first 120 characters
-            const preview =
-              fullResponse.length > 120
-                ? fullResponse.substring(0, 120) + "..."
-                : fullResponse;
-            setResponsePreview(preview);
-          },
-        }
-      );
-    }
-  }, [cluster.cluster_id]);
 
   return (
     <>
@@ -89,27 +66,13 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
                 <p className="text-muted-foreground text-xs uppercase tracking-wide">
                   Suggested Response
                 </p>
-                {generateMutation.isPending ? (
-                  <div className="mt-2 space-y-2">
-                    <div className="h-4 w-full bg-muted animate-pulse rounded" />
-                    <div className="h-4 w-3/4 bg-muted animate-pulse rounded" />
-                  </div>
-                ) : (
-                  <>
-                    <p className="text-sm text-foreground mt-2 leading-relaxed">
-                      {responsePreview || "No response generated yet."}
-                    </p>
-                    {responsePreview && (
-                      <Button
-                        onClick={() => setIsModalOpen(true)}
-                        variant="link"
-                        className="p-0 h-auto text-secondary-foreground hover:text-secondary-foreground/80 mt-2"
-                      >
-                        Read more →
-                      </Button>
-                    )}
-                  </>
-                )}
+                <div className="mt-2">
+                  <ResponseSuggestion
+                    clusterId={cluster.cluster_id}
+                    variant="preview"
+                    onViewFullResponse={() => setIsModalOpen(true)}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -123,7 +86,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
             <DialogTitle>Suggested Response</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <ResponseSuggestion clusterId={cluster.cluster_id} />
+            <ResponseSuggestion clusterId={cluster.cluster_id} variant="full" />
           </DialogBody>
         </DialogContent>
       </Dialog>

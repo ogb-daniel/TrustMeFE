@@ -10,9 +10,11 @@ import { useRejectAlert } from "@/lib/hooks/mutations/use-reject-alert";
 
 interface ResponseSuggestionProps {
   clusterId: string;
+  variant?: "preview" | "full";
+  onViewFullResponse?: () => void;
 }
 
-export function ResponseSuggestion({ clusterId }: ResponseSuggestionProps) {
+export function ResponseSuggestion({ clusterId, variant = "full", onViewFullResponse }: ResponseSuggestionProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [response, setResponse] = useState("");
   const [alertId, setAlertId] = useState<string | null>(null);
@@ -64,6 +66,38 @@ export function ResponseSuggestion({ clusterId }: ResponseSuggestionProps) {
     approveMutation.isPending ||
     rejectMutation.isPending;
 
+  // Preview variant - show just the text with a "Read more" link
+  if (variant === "preview") {
+    if (generateMutation.isPending) {
+      return (
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-muted animate-pulse rounded" />
+          <div className="h-4 w-3/4 bg-muted animate-pulse rounded" />
+        </div>
+      );
+    }
+
+    const preview = response.length > 120 ? response.substring(0, 120) + "..." : response;
+
+    return (
+      <>
+        <p className="text-sm text-foreground leading-relaxed">
+          {preview || "No response generated yet."}
+        </p>
+        {response && onViewFullResponse && (
+          <Button
+            onClick={onViewFullResponse}
+            variant="link"
+            className="p-0 h-auto text-secondary-foreground hover:text-secondary-foreground/80 mt-2"
+          >
+            Read more →
+          </Button>
+        )}
+      </>
+    );
+  }
+
+  // Full variant - show the complete component with editing and actions
   return (
     <Card className="p-6 bg-card border border-border/50">
       {/* <h2 className="text-lg font-semibold text-foreground mb-6">Suggested Response</h2> */}
