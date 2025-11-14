@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useClusters } from "@/lib/hooks/queries/use-clusters"
-import { DataTable } from "@/components/ui/data-table"
-import { clustersColumns } from "@/components/tables/clusters-columns"
-import { ThemeSwitcher } from "@/components/theme-switcher"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useClusters } from "@/lib/hooks/queries/use-clusters";
+import { DataTable } from "@/components/ui/data-table";
+import { clustersColumns } from "@/components/tables/clusters-columns";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function AllAlertsPage() {
-  const router = useRouter()
-  const [page, setPage] = useState(1)
-  const pageSize = 10
+  const router = useRouter();
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   const { data, isLoading, error } = useClusters(
     { page, page_size: pageSize },
     { refetchInterval: false } // Disable polling for this page
-  )
+  );
 
-  const clusters = data?.clusters || []
-  const totalPages = Math.ceil((data?.total || 0) / pageSize)
+  const clusters = data?.clusters || [];
+  const totalPages = Math.ceil((data?.total || 0) / pageSize);
 
   return (
     <main className="min-h-screen bg-background">
@@ -40,14 +40,18 @@ export default function AllAlertsPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">All Clusters</h1>
-          <p className="text-muted-foreground mt-2">View and manage all active misinformation clusters</p>
+          <h1 className="text-3xl font-bold text-foreground">All Narratives</h1>
+          <p className="text-muted-foreground mt-2">
+            View and manage all active misinformation narratives
+          </p>
         </div>
 
         {/* Error State */}
         {error && (
           <Card className="p-6 bg-card border border-border/50">
-            <p className="text-destructive">Error loading clusters: {error.message}</p>
+            <p className="text-destructive">
+              Error loading clusters: {error.message}
+            </p>
           </Card>
         )}
 
@@ -69,19 +73,20 @@ export default function AllAlertsPage() {
               columns={clustersColumns}
               data={clusters}
               searchKey="narrative"
-              searchPlaceholder="Search clusters..."
+              searchPlaceholder="Search narratives..."
             />
 
             {/* Pagination Controls */}
             <div className="px-6 py-4 border-t border-border/50 flex items-center justify-between">
               <div className="text-sm text-muted-foreground">
-                Showing page {page} of {totalPages} ({data?.total || 0} total clusters)
+                Showing page {page} of {totalPages} ({data?.total || 0} total
+                narratives)
               </div>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
                   className="gap-1"
                 >
@@ -91,7 +96,7 @@ export default function AllAlertsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
                   className="gap-1"
                 >
@@ -104,5 +109,5 @@ export default function AllAlertsPage() {
         )}
       </div>
     </main>
-  )
+  );
 }

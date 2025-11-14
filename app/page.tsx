@@ -294,7 +294,7 @@ export default function Dashboard() {
               variant="ghost"
               className="text-muted-foreground hover:text-foreground"
             >
-              View All Clusters →
+              View All Narratives →
             </Button>
           </div>
         </Card>
