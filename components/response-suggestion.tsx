@@ -158,11 +158,18 @@ export function ResponseSuggestion({
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="p-4 rounded-lg bg-background/60 border border-border/30 min-h-[120px]">
+          {/* <div className="p-4 rounded-lg bg-background/60 border border-border/30 min-h-[120px]">
             <p className="text-sm text-foreground leading-relaxed">
               {response || "No response generated yet."}
             </p>
-          </div>
+          </div> */}
+          <Textarea
+            value={response}
+            onChange={(e) => setResponse(e.target.value)}
+            className="min-h-[120px] resize-none bg-background border-border/50 disabled:opacity-100 hover:cursor-default"
+            placeholder="No response generated yet"
+            disabled
+          />
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             <Button
