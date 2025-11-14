@@ -128,13 +128,24 @@ export default function Dashboard() {
               <Card className="p-6 bg-card border border-border/50 mb-8">
                 <div className="flex items-center justify-between">
                   <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
-                    Highlights
+                    Highlights of{" "}
+                    {comparisonPeriod === "yesterday"
+                      ? "Today"
+                      : comparisonPeriod === "last_week"
+                        ? "This week"
+                        : comparisonPeriod === "last_month"
+                          ? "This month"
+                          : comparisonPeriod === "last_quarter"
+                            ? "This quarter"
+                            : comparisonPeriod === "last_year"
+                              ? "This year"
+                              : ""}
                   </p>
                 </div>
                 {isLoading ? (
                   <div className="h-10 w-24 bg-muted animate-pulse rounded mt-2" />
                 ) : (
-                  <p className="text-4xl font-bold text-foreground mt-2">
+                  <p className="text-3xl font-bold text-foreground">
                     {statsData.interpretation.summary}
                   </p>
                 )}
@@ -165,48 +176,25 @@ export default function Dashboard() {
             )}
           </Card>
 
-          <Card className="p-6 bg-card border border-border/50">
+          <Card className="p-6 bg-card border col-span-2 border-border/50 mb-8">
             <div className="flex items-center justify-between">
               <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
-                New Alerts (24H)
-              </p>
-              <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-            </div>
-            {isLoading ? (
-              <div className="h-10 w-16 bg-muted animate-pulse rounded mt-2" />
-            ) : (
-              <p className="text-4xl font-bold text-muted-foreground mt-2">2</p>
-            )}
-          </Card>
-
-          <Card className="p-6 bg-card border border-border/50">
-            <div className="flex items-center justify-between">
-              <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
-                Major Sentiment
+                Highest Risk Topic
               </p>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </div>
-            {/* <MajorSentimentAnalysis sentiment={highestRiskCluster?.sentiment} /> */}
+            {isLoading ? (
+              <div className="h-10 w-24 bg-muted animate-pulse rounded mt-2" />
+            ) : (
+              <p className="text-3xl font-bold text-foreground mt-2">
+                {highestRiskCluster?.narrative || 0}
+              </p>
+            )}
           </Card>
         </div>
-        <Card className="p-6 bg-card border border-border/50 mb-8">
-          <div className="flex items-center justify-between">
-            <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
-              Highest Risk Topic
-            </p>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </div>
-          {isLoading ? (
-            <div className="h-10 w-24 bg-muted animate-pulse rounded mt-2" />
-          ) : (
-            <p className="text-4xl font-bold text-foreground mt-2">
-              {highestRiskCluster?.narrative || 0}
-            </p>
-          )}
-        </Card>
 
         {/* Misinformation Spread Velocity */}
-        <Card className="p-6 bg-card border border-border/50 mb-8">
+        {/* <Card className="p-6 bg-card border border-border/50 mb-8">
           <div className="flex items-start justify-between mb-6">
             <div>
               <h2 className="text-lg font-semibold text-foreground">
@@ -249,7 +237,7 @@ export default function Dashboard() {
               />
             </LineChart>
           </ResponsiveContainer>
-        </Card>
+        </Card> */}
 
         {/* Trending Clusters Table */}
         <Card className="bg-card border border-border/50 overflow-hidden">

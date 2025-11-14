@@ -10,12 +10,17 @@ interface DashboardStatsProps {
 }
 
 export function DashboardStats({ current, comparison }: DashboardStatsProps) {
-  const calculateChange = (currentValue: number, comparisonValue?: number): number | null => {
+  const calculateChange = (
+    currentValue: number,
+    comparisonValue?: number
+  ): number | null => {
     if (comparisonValue === undefined || comparisonValue === 0) return null;
     return ((currentValue - comparisonValue) / comparisonValue) * 100;
   };
 
-  const formatChange = (change: number | null): { text: string; color: string; icon: React.ReactNode } => {
+  const formatChange = (
+    change: number | null
+  ): { text: string; color: string; icon: React.ReactNode } => {
     if (change === null) {
       return {
         text: "N/A",
@@ -29,8 +34,18 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
 
     return {
       text: `${isPositive ? "+" : ""}${change.toFixed(1)}%`,
-      color: isPositive ? "text-emerald-600 dark:text-emerald-400" : isNegative ? "text-red-600 dark:text-red-400" : "text-muted-foreground",
-      icon: isPositive ? <TrendingUp className="h-3 w-3" /> : isNegative ? <TrendingDown className="h-3 w-3" /> : <Minus className="h-3 w-3" />,
+      color: isPositive
+        ? "text-emerald-600 dark:text-emerald-400"
+        : isNegative
+          ? "text-red-600 dark:text-red-400"
+          : "text-muted-foreground",
+      icon: isPositive ? (
+        <TrendingUp className="h-3 w-3" />
+      ) : isNegative ? (
+        <TrendingDown className="h-3 w-3" />
+      ) : (
+        <Minus className="h-3 w-3" />
+      ),
     };
   };
 
@@ -40,6 +55,14 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
     }
     if (num >= 1000) {
       return `${(num / 1000).toFixed(1)}K`;
+    }
+    // For decimal values less than 1, show 3 decimal places
+    if (num < 1 && num > 0) {
+      return num.toFixed(3);
+    }
+    // For values between 1 and 1000, show 1 decimal place if needed
+    if (num % 1 !== 0) {
+      return num.toFixed(2);
     }
     return num.toFixed(0);
   };
@@ -67,7 +90,9 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
             {suffix}
           </p>
           {comparison && (
-            <div className={`flex items-center gap-1 text-xs font-medium ${changeFormat.color}`}>
+            <div
+              className={`flex items-center gap-1 text-xs font-medium ${changeFormat.color}`}
+            >
               {changeFormat.icon}
               <span>{changeFormat.text}</span>
             </div>
@@ -81,7 +106,9 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
     <div className="space-y-6">
       {/* Volume Metrics */}
       <Card className="p-6 bg-card border border-border/50">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Volume Metrics</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">
+          Volume Metrics
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             title="Total Mentions"
@@ -107,8 +134,10 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
       </Card>
 
       {/* Risk Metrics */}
-      <Card className="p-6 bg-card border border-border/50">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Risk Metrics</h3>
+      {/* <Card className="p-6 bg-card border border-border/50">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
+          Risk Metrics
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             title="Avg Risk Score"
@@ -126,22 +155,30 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
             comparisonValue={comparison?.risk_metrics.peak_risk_score}
           />
           <div className="p-4 rounded-lg bg-background/50 border border-border/30">
-            <p className="text-xs text-muted-foreground mb-2">Risk Tier Distribution</p>
+            <p className="text-xs text-muted-foreground mb-2">
+              Risk Tier Distribution
+            </p>
             <div className="space-y-1">
-              {Object.entries(current.risk_metrics.risk_tier_distribution).map(([tier, count]) => (
-                <div key={tier} className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">{tier}:</span>
-                  <span className="font-semibold text-foreground">{count}</span>
-                </div>
-              ))}
+              {Object.entries(current.risk_metrics.risk_tier_distribution).map(
+                ([tier, count]) => (
+                  <div key={tier} className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">{tier}:</span>
+                    <span className="font-semibold text-foreground">
+                      {count}
+                    </span>
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
-      </Card>
+      </Card> */}
 
       {/* Engagement Metrics */}
-      <Card className="p-6 bg-card border border-border/50">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Engagement Metrics</h3>
+      {/* <Card className="p-6 bg-card border border-border/50">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
+          Engagement Metrics
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             title="Total Engagement"
@@ -151,7 +188,9 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
           <StatCard
             title="Avg Virality Index"
             value={current.engagement_metrics.average_virality_index}
-            comparisonValue={comparison?.engagement_metrics.average_virality_index}
+            comparisonValue={
+              comparison?.engagement_metrics.average_virality_index
+            }
           />
           <StatCard
             title="Peak Virality"
@@ -164,68 +203,43 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
             comparisonValue={comparison?.engagement_metrics.avg_engagement_rate}
           />
         </div>
-      </Card>
+      </Card> */}
 
       {/* Sentiment & Credibility */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6 bg-card border border-border/50">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Sentiment Metrics</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <StatCard
-              title="Negative"
-              value={current.sentiment_metrics.total_negative}
-              comparisonValue={comparison?.sentiment_metrics.total_negative}
-            />
-            <StatCard
-              title="Negative %"
-              value={current.sentiment_metrics.negative_percentage}
-              comparisonValue={comparison?.sentiment_metrics.negative_percentage}
-              suffix="%"
-            />
-            <StatCard
-              title="Avg Fear"
-              value={current.sentiment_metrics.avg_fear}
-              comparisonValue={comparison?.sentiment_metrics.avg_fear}
-            />
-            <StatCard
-              title="Avg Anger"
-              value={current.sentiment_metrics.avg_anger}
-              comparisonValue={comparison?.sentiment_metrics.avg_anger}
-            />
-          </div>
-        </Card>
-
-        <Card className="p-6 bg-card border border-border/50">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Credibility Metrics</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <StatCard
-              title="Avg Credibility"
-              value={current.credibility_metrics.average_credibility}
-              comparisonValue={comparison?.credibility_metrics.average_credibility}
-            />
-            <StatCard
-              title="Low Credibility %"
-              value={current.credibility_metrics.low_credibility_percentage}
-              comparisonValue={comparison?.credibility_metrics.low_credibility_percentage}
-              suffix="%"
-            />
-            <StatCard
-              title="Divergence Incidents"
-              value={current.credibility_metrics.divergence_incidents}
-              comparisonValue={comparison?.credibility_metrics.divergence_incidents}
-            />
-            <StatCard
-              title="Avg Coordination"
-              value={current.credibility_metrics.avg_coordination_score}
-              comparisonValue={comparison?.credibility_metrics.avg_coordination_score}
-            />
-          </div>
-        </Card>
-      </div>
+      <Card className="p-6 bg-card border border-border/50">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
+          Sentiment Metrics
+        </h3>
+        <div className="grid grid-cols-2 gap-4">
+          <StatCard
+            title="Negative"
+            value={current.sentiment_metrics.total_negative}
+            comparisonValue={comparison?.sentiment_metrics.total_negative}
+          />
+          <StatCard
+            title="Negative %"
+            value={current.sentiment_metrics.negative_percentage}
+            comparisonValue={comparison?.sentiment_metrics.negative_percentage}
+            suffix="%"
+          />
+          <StatCard
+            title="Total Positive"
+            value={current.sentiment_metrics.total_positive}
+            comparisonValue={comparison?.sentiment_metrics.total_positive}
+          />
+          <StatCard
+            title="Total Neutral"
+            value={current.sentiment_metrics.total_neutral}
+            comparisonValue={comparison?.sentiment_metrics.total_neutral}
+          />
+        </div>
+      </Card>
 
       {/* Response Metrics */}
       <Card className="p-6 bg-card border border-border/50">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Response Metrics</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">
+          Response Metrics
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <StatCard
             title="Active Alerts"
