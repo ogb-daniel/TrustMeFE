@@ -63,7 +63,7 @@ export function AlertBanner({ cluster }: AlertBannerProps) {
                 </div>
               </div>
               <div className="col-span-2">
-                <p className="text-muted-foreground text-xs uppercase tracking-wide">
+                <p className=" font-bold text-lg uppercase tracking-wide">
                   Suggested Response
                 </p>
                 <div className="mt-2">

@@ -23,7 +23,7 @@ export function EvidenceSection({ posts, clusterId }: EvidenceSectionProps) {
 
   return (
     <Card className="p-6 bg-card border border-border/50">
-      <h2 className="text-lg font-semibold text-foreground mb-6">
+      <h2 className="text-xl font-semibold text-foreground mb-6">
         Evidence (Top {topPosts.length} Posts)
       </h2>
 
