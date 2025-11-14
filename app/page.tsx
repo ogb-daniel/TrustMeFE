@@ -127,7 +127,7 @@ export default function Dashboard() {
             {statsData.interpretation && (
               <Card className="p-6 bg-card border border-border/50 mb-8">
                 <div className="flex items-center justify-between">
-                  <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
+                  <p className="text-green-500 text-sm font-semibold uppercase tracking-wide">
                     Highlights of{" "}
                     {comparisonPeriod === "yesterday"
                       ? "Today"
@@ -157,9 +157,23 @@ export default function Dashboard() {
             />
           </div>
         ) : null}
-
+        <Card className="p-6 bg-card border col-span-2 border-border/50 mb-8">
+          <div className="flex items-center justify-between">
+            <p className="text-red-500 text-sm font-semibold uppercase tracking-wide">
+              Highest Risk Topic
+            </p>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </div>
+          {isLoading ? (
+            <div className="h-10 w-24 bg-muted animate-pulse rounded mt-2" />
+          ) : (
+            <p className="text-3xl font-bold text-foreground mt-2">
+              {highestRiskCluster?.narrative || 0}
+            </p>
+          )}
+        </Card>
         {/* Quick Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* <div className=" gap-4 mb-8">
           <Card className="p-6 bg-card border border-border/50">
             <div className="flex items-center justify-between">
               <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
@@ -176,22 +190,8 @@ export default function Dashboard() {
             )}
           </Card>
 
-          <Card className="p-6 bg-card border col-span-2 border-border/50 mb-8">
-            <div className="flex items-center justify-between">
-              <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
-                Highest Risk Topic
-              </p>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </div>
-            {isLoading ? (
-              <div className="h-10 w-24 bg-muted animate-pulse rounded mt-2" />
-            ) : (
-              <p className="text-3xl font-bold text-foreground mt-2">
-                {highestRiskCluster?.narrative || 0}
-              </p>
-            )}
-          </Card>
-        </div>
+       
+        </div> */}
 
         {/* Misinformation Spread Velocity */}
         {/* <Card className="p-6 bg-card border border-border/50 mb-8">
@@ -242,7 +242,7 @@ export default function Dashboard() {
         {/* Trending Clusters Table */}
         <Card className="bg-card border border-border/50 overflow-hidden">
           <div className="p-6 border-b border-border/50">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">
               Trending Narratives
             </h2>
             {/* <p className="text-sm text-muted-foreground mt-1">
