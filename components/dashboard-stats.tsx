@@ -89,7 +89,7 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
             {formatNumber(value)}
             {suffix}
           </p>
-          {comparison && (
+          {comparisonValue && (
             <div
               className={`flex items-center gap-1 text-xs font-medium ${changeFormat.color}`}
             >
@@ -104,34 +104,74 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
 
   return (
     <div className="space-y-6">
-      {/* Volume Metrics */}
+      {/* Sentiment & Credibility */}
       <Card className="p-6 bg-card border border-border/50">
         <h3 className="text-lg font-semibold text-foreground mb-4">
-          Volume Metrics
+          Sentiment Metrics
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <StatCard
-            title="Total Mentions"
-            value={current.volume_metrics.total_mentions}
-            comparisonValue={comparison?.volume_metrics.total_mentions}
+            title="Negative"
+            value={current.sentiment_metrics.total_negative}
+            comparisonValue={comparison?.sentiment_metrics.total_negative}
           />
           <StatCard
-            title="Post Velocity"
-            value={current.volume_metrics.post_velocity}
-            comparisonValue={comparison?.volume_metrics.post_velocity}
+            title="Negative %"
+            value={current.sentiment_metrics.negative_percentage}
+            comparisonValue={comparison?.sentiment_metrics.negative_percentage}
+            suffix="%"
           />
           <StatCard
-            title="Clusters"
-            value={current.volume_metrics.cluster_count}
-            comparisonValue={comparison?.volume_metrics.cluster_count}
+            title="Total Positive"
+            value={current.sentiment_metrics.total_positive}
+            comparisonValue={comparison?.sentiment_metrics.total_positive}
           />
           <StatCard
-            title="Alerts"
-            value={current.volume_metrics.alert_volume}
-            comparisonValue={comparison?.volume_metrics.alert_volume}
+            title="Total Neutral"
+            value={current.sentiment_metrics.total_neutral}
+            comparisonValue={comparison?.sentiment_metrics.total_neutral}
           />
         </div>
       </Card>
+      {/* Volume Metrics */}
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="p-6 bg-card border border-border/50">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
+            Volume Metrics
+          </h3>
+          <div className="grid grid-cols-2  gap-4">
+            <StatCard
+              title="Total Mentions"
+              value={current.volume_metrics.total_mentions}
+              // comparisonValue={comparison?.volume_metrics.total_mentions}
+            />
+            <StatCard
+              title="Post Velocity"
+              value={current.volume_metrics.post_velocity}
+              // comparisonValue={comparison?.volume_metrics.post_velocity}
+            />
+          </div>
+        </Card>
+        {/* Response Metrics */}
+        <Card className="p-6 bg-card border border-border/50">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
+            Response Metrics
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+            <StatCard
+              title="Active Alerts"
+              value={current.response_metrics.active_alerts}
+              // comparisonValue={comparison?.response_metrics.active_alerts}
+            />
+            <StatCard
+              title="Approval Rate"
+              value={current.response_metrics.approval_rate}
+              comparisonValue={comparison?.response_metrics.approval_rate}
+              suffix="%"
+            />
+          </div>
+        </Card>
+      </div>
 
       {/* Risk Metrics */}
       {/* <Card className="p-6 bg-card border border-border/50">
@@ -204,62 +244,6 @@ export function DashboardStats({ current, comparison }: DashboardStatsProps) {
           />
         </div>
       </Card> */}
-
-      {/* Sentiment & Credibility */}
-      <Card className="p-6 bg-card border border-border/50">
-        <h3 className="text-lg font-semibold text-foreground mb-4">
-          Sentiment Metrics
-        </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <StatCard
-            title="Negative"
-            value={current.sentiment_metrics.total_negative}
-            comparisonValue={comparison?.sentiment_metrics.total_negative}
-          />
-          <StatCard
-            title="Negative %"
-            value={current.sentiment_metrics.negative_percentage}
-            comparisonValue={comparison?.sentiment_metrics.negative_percentage}
-            suffix="%"
-          />
-          <StatCard
-            title="Total Positive"
-            value={current.sentiment_metrics.total_positive}
-            comparisonValue={comparison?.sentiment_metrics.total_positive}
-          />
-          <StatCard
-            title="Total Neutral"
-            value={current.sentiment_metrics.total_neutral}
-            comparisonValue={comparison?.sentiment_metrics.total_neutral}
-          />
-        </div>
-      </Card>
-
-      {/* Response Metrics */}
-      <Card className="p-6 bg-card border border-border/50">
-        <h3 className="text-lg font-semibold text-foreground mb-4">
-          Response Metrics
-        </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <StatCard
-            title="Active Alerts"
-            value={current.response_metrics.active_alerts}
-            comparisonValue={comparison?.response_metrics.active_alerts}
-          />
-          <StatCard
-            title="Approval Rate"
-            value={current.response_metrics.approval_rate}
-            comparisonValue={comparison?.response_metrics.approval_rate}
-            suffix="%"
-          />
-          <StatCard
-            title="Response Coverage"
-            value={current.response_metrics.response_coverage}
-            comparisonValue={comparison?.response_metrics.response_coverage}
-            suffix="%"
-          />
-        </div>
-      </Card>
     </div>
   );
 }

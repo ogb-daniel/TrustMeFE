@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   const { data, isLoading, error } = useClusters({
     page: 1,
-    page_size: 3, // Show only 3 clusters on dashboard
+    page_size: 5, // Show only 3 clusters on dashboard
   });
 
   const {
